@@ -36,7 +36,7 @@ sudo apt update
 sudo apt install -y build-essential bc bison flex libssl-dev libncurses-dev \
     libelf-dev libelf1 dwarves device-tree-compiler \
     git rsync python3 python3-pip crossbuild-essential-arm64
-
+cd pios
 # 2. Chạy lệnh khởi tạo lại cây thư mục: 
 chmod +x tools/setup.sh
 ./tools/setup.sh
