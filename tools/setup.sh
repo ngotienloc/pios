@@ -14,7 +14,6 @@ echo "=== 🏗️ BẮT ĐẦU KHÔI PHỤC CẤU TRÚC THƯ MỤC ==="
 echo "Tạo lại các thư mục chính: kernel/linux, build_artifacts, images, mnt, v.v."
 
 mkdir -p "$PROJECT_ROOT"/kernel/patches \
-         "$PROJECT_ROOT"/kernel/linux \
          "$PROJECT_ROOT"/build_artifacts \
          "$PROJECT_ROOT"/images \
          "$PROJECT_ROOT"/sdcard \
