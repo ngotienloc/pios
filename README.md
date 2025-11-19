@@ -53,6 +53,10 @@ chmod +x tools/copy-code.sh
 cd ~/pios/kernel/linux
 patch -p1 < ../patches/mlfq.patch
 
+cd ~/pios/kernel/linux/include/linux
+nano sched.h
+Ctr / đến dòng cuối : 99999 r thêm #endif sau đó Ctr O, Ctr X. 
+
 # 6. Thực hiện build kernel:
 cd ~/pios
 chmod +x tools/build.sh 
