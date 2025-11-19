@@ -4,7 +4,7 @@ IFS=$'\n\t'
 
 # =========================================================
 # PIOS MLFQ: BUILD & DEPLOY KERNEL VÀO IMAGE MẪU (RPi4)
-# Phiên bản chỉnh sửa giống hướng dẫn hd dưới
+# Phiên bản đã fix build clean + auto_group.o
 # =========================================================
 
 ARCH="arm64"
@@ -33,16 +33,25 @@ cleanup() {
 }
 trap cleanup EXIT INT TERM
 
+# --- 0. Patch MLFQ: loại bỏ auto_group.o nếu cần ---
+SCHED_MAKEFILE="$KERNEL_DIR/kernel/sched/Makefile"
+if grep -q "auto_group.o" "$SCHED_MAKEFILE"; then
+    echo "--- Loại bỏ auto_group.o khỏi kernel/sched/Makefile ---"
+    sed -i '/auto_group.o/d' "$SCHED_MAKEFILE"
+fi
+
 # --- 1. Build kernel ---
 cd "$KERNEL_DIR"
-echo "1. Sử dụng bcm2711_defconfig cho RPi4"
+echo "1. Clean build kernel"
+make ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" mrproper
+echo "2. Sử dụng bcm2711_defconfig cho RPi4"
 make ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" bcm2711_defconfig
 
 # Copy .config sang build_artifacts
 mkdir -p "$BUILD_DIR"
 cp .config "$BUILD_DIR/"
 
-echo "2. Biên dịch Image, DTB, Modules"
+echo "3. Biên dịch Image, DTB, Modules"
 make -j"$NUM_JOBS" ARCH="$ARCH" CROSS_COMPILE="$CROSS_COMPILE" Image dtbs modules
 
 # Copy Image và DTB sang thư mục build_artifacts / device-tree
@@ -58,7 +67,6 @@ echo "✅ Build kernel xong."
 # --- 2. Setup Image Rootfs ---
 if [ ! -f "$IMG_PATH" ]; then
     echo "❌ Không tìm thấy file image: $IMG_PATH"
-    echo "Vui lòng tải hoặc chuẩn bị file image."
     exit 1
 fi
 
@@ -81,6 +89,9 @@ sudo cp "$DEVICE_TREE_DIR/bcm2711-rpi-4-b.dtb" "$MOUNT_BOOT/"
 echo "Copy Modules vào rootfs"
 sudo mkdir -p "$MOUNT_ROOT/lib/modules"
 sudo rm -rf "$MOUNT_ROOT/lib/modules/"*
-sudo cp -r "$BUILD_DIR/lib/modules/"* "$MOUNT_ROOT/lib/modules/"
+
+if [ -d "$BUILD_DIR/lib/modules" ]; then
+    sudo cp -r "$BUILD_DIR/lib/modules/"* "$MOUNT_ROOT/lib/modules/"
+fi
 
 echo "🎉 Triển khai xong."
