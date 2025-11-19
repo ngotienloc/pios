@@ -27,7 +27,7 @@ fi
 # 2. TẢI VÀ GIẢI NÉN IMAGE MẪU
 if [ ! -f "$IMAGE_PATH" ]; then
     echo "2. Tải Raspberry Pi OS Image mẫu..."
-    cd "$PROJECT_ROOT/images"
+    cd "pios/images"
     # Tải file .xz từ URL cố định
     wget -nc https://downloads.raspberrypi.org/raspios_lite_arm64_latest -O "${IMAGE_NAME}.xz"
     echo "Giải nén Image..."
