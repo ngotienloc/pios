@@ -51,11 +51,7 @@ chmod +x tools/copy-code.sh
 
 # 5. Nếu clone lần đầu, bạn cần chạy các lệnh sau để chỉnh sửa các file trong sched: 
 cd ~/pios/kernel/linux
-git init
-git add include/linux/sched.h kernel/sched/core.c kernel/sched/Makefile
-git commit -m "MLFQ: Final structural integration"
-git format-patch -1 --stdout > ../patches/mlfq.patch
-rm -rf .git
+patch -p1 < ../patches/mlfq.patch
 
 # 6. Thực hiện build kernel:
 cd ~/pios

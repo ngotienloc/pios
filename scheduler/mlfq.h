@@ -4,6 +4,7 @@
 #define _LINUX_MLFQ_H
 
 #include <linux/list.h>
+#include <linux/sched.h> // Cần thiết cho struct task_struct và struct rq
 
 
 // Định nghĩa số lượng hàng đợi
@@ -27,12 +28,13 @@ struct mlfq_task_info {
 };
 
 // Khai báo các hàm Scheduler Class Interface (sẽ được định nghĩa trong mlfq.c)
-extern void enqueue_task_mlfq(struct rq *rq, struct task_struct *p, int flags);
-extern void dequeue_task_mlfq(struct rq *rq, struct task_struct *p, int flags);
-extern struct task_struct *pick_next_task_mlfq(struct rq *rq);
-extern void put_prev_task_mlfq(struct rq *rq, struct task_struct *prev);
-extern void task_tick_mlfq(struct rq *rq, struct task_struct *p, int queued);
-extern void set_curr_task_mlfq(struct rq *rq);
-extern void switched_to_mlfq(struct rq *rq, struct task_struct *p);
+// ĐÃ XÓA TỪ KHÓA 'extern' để giải quyết lỗi không tương thích.
+void enqueue_task_mlfq(struct rq *rq, struct task_struct *p, int flags);
+void dequeue_task_mlfq(struct rq *rq, struct task_struct *p, int flags);
+struct task_struct *pick_next_task_mlfq(struct rq *rq);
+void put_prev_task_mlfq(struct rq *rq, struct task_struct *prev);
+void task_tick_mlfq(struct rq *rq, struct task_struct *p, int queued);
+void set_curr_task_mlfq(struct rq *rq);
+void switched_to_mlfq(struct rq *rq, struct task_struct *p);
 
 #endif /* _LINUX_MLFQ_H */
