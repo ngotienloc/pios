@@ -17,6 +17,7 @@ mkdir -p "$PROJECT_ROOT"/kernel/patches \
          "$PROJECT_ROOT"/build_artifacts \
          "$PROJECT_ROOT"/images \
          "$PROJECT_ROOT"/sdcard \
+         "$PROJECT_ROOT"/device-tree/overlays\
          "$PROJECT_ROOT"/scheduler/test
 
 echo "=== ✅ KHÔI PHỤC CẤU TRÚC HOÀN TẤT ==="
