@@ -29,20 +29,39 @@ Thực hiện các lệnh sau trong terminal, bắt đầu từ thư mục gốc
 Cài đặt các gói phụ thuộc và Cross-Compiler cho kiến trúc ARM64:
 
 ```bash
-# 1. Cài đặt các gói cần thiết
+# 1. Cài đặt các gói cần thiết (Lần đầu sử dụng)
 sudo apt update
 sudo apt install -y build-essential bc bison flex libssl-dev libncurses-dev \
     libelf-dev libelf1 dwarves device-tree-compiler \
     git rsync python3 python3-pip crossbuild-essential-arm64
 
-# 2. Tải Kernel Source (Source Kernel Gốc)
-cd kernel/
-git clone --depth=1 --branch rpi-6.12.y [https://github.com/raspberrypi/linux.git](https://github.com/raspberrypi/linux.git) linux
-cd ../
+# 2. Chạy lệnh khởi tạo lại cây thư mục: 
+chmod +x tools/setup.sh
+./tools/setup.sh
 
-# 3. Tải Image Mẫu (Nếu cần triển khai)
-mkdir -p images
-cd images/
-wget [https://downloads.raspberrypi.org/raspios_lite_arm64_latest](https://downloads.raspberrypi.org/raspios_lite_arm64_latest) -O raspios_arm64.img.xz
-unxz raspios_arm64.img.xz
-cd ../
+# 3. Downloads các kernel và images cơ bản: 
+chmod +x tools/downloads.sh 
+./tools/downloads.sh 
+
+# 4. Chạy copy code để cập nhật mlfq
+chmod +x tools/copy-code.sh 
+./tools/copy-code.sh
+
+# 5. Nếu clone lần đầu, bạn cần chạy các lệnh sau để chỉnh sửa các file trong sched: 
+cd ~/pios/kernel/linux
+git init
+git add include/linux/sched.h kernel/sched/core.c kernel/sched/Makefile
+git commit -m "MLFQ: Final structural integration"
+git format-patch -1 --stdout > ../patches/mlfq.patch
+rm -rf .git
+
+# 6. Thực hiện build kernel:
+cd ~/pios
+chmod +x tools/build.sh 
+./tools tools/build.sh
+
+# 7. Thực hiện mount vào image:
+chmod +x tools/mount_image.sh 
+./tools/mount_image.sh 
+
+// Ấn Ctrl C để unmount
