@@ -28,6 +28,8 @@ Thực hiện các lệnh sau trong terminal, bắt đầu từ thư mục gốc
 
 Cài đặt các gói phụ thuộc và Cross-Compiler cho kiến trúc ARM64:
 
+Clone dự án: https://github.com/ngotienloc/pios.git
+
 ```bash
 # 1. Cài đặt các gói cần thiết (Lần đầu sử dụng)
 sudo apt update
