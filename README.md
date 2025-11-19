@@ -62,8 +62,4 @@ cd ~/pios
 chmod +x tools/build.sh 
 ./tools/build.sh
 
-# 7. Thực hiện mount vào image:
-chmod +x tools/mount_image.sh 
-./tools/mount_image.sh 
 
-// Ấn Ctrl C để unmount
