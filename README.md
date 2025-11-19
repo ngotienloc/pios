@@ -42,7 +42,7 @@ chmod +x tools/setup.sh
 ./tools/setup.sh
 
 # 3. Downloads các kernel và images cơ bản: 
-chmod +x tools/downloads.sh 
+chmod +x tools/download.sh 
 ./tools/download.sh 
 
 # 4. Chạy copy code để cập nhật mlfq
@@ -60,7 +60,7 @@ rm -rf .git
 # 6. Thực hiện build kernel:
 cd ~/pios
 chmod +x tools/build.sh 
-./tools tools/build.sh
+./tools/build.sh
 
 # 7. Thực hiện mount vào image:
 chmod +x tools/mount_image.sh 
