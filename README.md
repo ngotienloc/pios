@@ -43,7 +43,7 @@ chmod +x tools/setup.sh
 
 # 3. Downloads các kernel và images cơ bản: 
 chmod +x tools/downloads.sh 
-./tools/downloads.sh 
+./tools/download.sh 
 
 # 4. Chạy copy code để cập nhật mlfq
 chmod +x tools/copy-code.sh 
