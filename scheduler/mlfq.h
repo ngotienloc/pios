@@ -3,6 +3,10 @@
 #ifndef _LINUX_MLFQ_H
 #define _LINUX_MLFQ_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include <linux/list.h>
 #include <linux/sched.h> // Cần thiết cho struct task_struct và struct rq
 
@@ -36,5 +40,9 @@ void put_prev_task_mlfq(struct rq *rq, struct task_struct *prev);
 void task_tick_mlfq(struct rq *rq, struct task_struct *p, int queued);
 void set_curr_task_mlfq(struct rq *rq);
 void switched_to_mlfq(struct rq *rq, struct task_struct *p);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* _LINUX_MLFQ_H */
