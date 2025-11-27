@@ -1,28 +1,33 @@
 #include "mlfq.h"
 
 void init_queue(Queue *q){
-    q->front = 0; 
+    q->front = -1; 
     q->rear = -1; 
     q->count = 0; 
 }
-
-void enqueue(Queue *q, Process *t){ 
-    if(q->count < MAX_PROCESS){ 
-        q->rear = (q->rear++)%MAX_PROCESS; 
-        q->task[q->rear] = t; 
-        q->count ++; 
-    }
+// Chua co phuong an xu ly co che task khi full, tam thoi quay vong
+void enqueue(Queue *q, Process *t){
+    if(q == NULL)
+        return; 
+    if(q->front == -1) 
+        q->front = 0; 
+    q->rear = (q->rear+1)%MAX_PROCESS; 
+    q->count++; 
+    q->task[q->rear] = t; 
 }
 
-Process* dequeue(Queue *q){
-    if(q->count ==0 )
+Process *deqeue(Queue *q){
+    Process *t; 
+    if(q==NULL)
         return NULL; 
-    Process *t = q->task[q->front++];
-    q->front = (q->front++)%MAX_PROCESS; 
-    q->count--;
-    return t;
+    if(q->front == -1)
+        return NULL;
+    t = q->task[q->front]; 
+    q->front = (q->front+1)%MAX_PROCESS; 
+    q->count--; 
+    return t; 
 }
 
-void run_mlfq(){
+void run_mlfq(Process process[], int n_task, int n_queue){
     
 }
