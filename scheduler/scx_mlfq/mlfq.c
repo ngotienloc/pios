@@ -1,33 +1,58 @@
-#include "mlfq.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#define max_task 10 
+#define queues 4 
 
-void init_queue(Queue *q){
-    q->front = -1; 
-    q->rear = -1; 
-    q->count = 0; 
+// Queue Structure
+typedef struct{
+    int pid; // id tasks  
+    int burst_time; //time resolve tasks 
+    int remaining_time; // Time remain
+    int arrival_time; 
+    int compeleted; 
+} Process; 
+
+typedef struct { 
+   int items[max_task];
+   int front, rear;  
+} Queue; 
+
+void inqueue(Queue *q){
+    q->front = q->rear = 0; 
 }
-// Chua co phuong an xu ly co che task khi full, tam thoi quay vong
-void enqueue(Queue *q, Process *t){
-    if(q == NULL)
+
+bool fullqueue(Queue *q){
+    return ((q->rear+1)%max_task == q->front); 
+}
+
+bool emptyqueue(Queue *q){
+    return (q->front == q->rear); 
+}
+
+void enqueue(Queue *q, int pid){
+    if(fullqueue(q))
         return; 
-    if(q->front == -1) 
-        q->front = 0; 
-    q->rear = (q->rear+1)%MAX_PROCESS; 
-    q->count++; 
-    q->task[q->rear] = t; 
+    q->rear=(q->rear+1)%max_task;
+    q->items[q->rear] = pid; 
 }
 
-Process *deqeue(Queue *q){
-    Process *t; 
-    if(q==NULL)
-        return NULL; 
-    if(q->front == -1)
-        return NULL;
-    t = q->task[q->front]; 
-    q->front = (q->front+1)%MAX_PROCESS; 
-    q->count--; 
-    return t; 
+void dequeue(Queue *q){
+    if(emptyqueue(q))
+        return; 
+    q->front = (q->front+1)%max_task; 
 }
 
-void run_mlfq(Process process[], int n_task, int n_queue){
+int main(){
+    Queue q[queues]; 
+    int time_quantum[queues] = {2, 4, 8}; 
+    Process p[max_task]; 
+
+    //init queue 
+    for(int i = 0; i < queues ; i++)
+        inqueue(&q[i]); 
     
+    Queue *DSQ = (Queue* )malloc(sizeof(Queue)); 
+    inqueue(DSQ); 
+
 }
